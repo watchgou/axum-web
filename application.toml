@@ -1,0 +1,4 @@
+[redis]
+host="42.192.75.76"
+port="4477"
+password="password01!"
