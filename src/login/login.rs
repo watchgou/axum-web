@@ -2,7 +2,6 @@ use axum::{http::StatusCode, response::IntoResponse, Json};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use crate::redis;
 
 /*
 iss (issuer)：签发人
