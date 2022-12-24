@@ -38,13 +38,13 @@ where
         let header = request.headers().get(header::AUTHORIZATION);
         // DECODE
 
-        if let Some(v1) = header {
-            match v1.to_str() {
-                Ok(v) => {
-                    let tk = &v[7..];
+        if let Some(value) = header {
+            match value.to_str() {
+                Ok(v1) => {
+                    let token_id = &v1[7..];
 
                     let token_message = decode::<Claims>(
-                        tk,
+                        token_id,
                         &DecodingKey::from_secret("abcdefghijklmnoprstxyz".as_ref()),
                         &Validation::new(Algorithm::HS256),
                     );
