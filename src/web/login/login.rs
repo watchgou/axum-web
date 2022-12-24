@@ -93,7 +93,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
     let token = encode(
         &Header::default(),
         &my_claims,
-        &EncodingKey::from_secret("abcdefghijklmnoprstxyz".as_ref()),
+        &EncodingKey::from_secret("lonely".as_ref()),
     )
     .unwrap();
     let token_id = Tokens { id: token };

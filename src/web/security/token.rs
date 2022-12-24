@@ -45,7 +45,7 @@ where
 
                     let token_message = decode::<Claims>(
                         token_id,
-                        &DecodingKey::from_secret("abcdefghijklmnoprstxyz".as_ref()),
+                        &DecodingKey::from_secret("lonely".as_ref()),
                         &Validation::new(Algorithm::HS256),
                     );
 
