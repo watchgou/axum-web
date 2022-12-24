@@ -83,7 +83,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
         email: _login.email.clone(),
     };
 
-    let _: () = redis::cmd("SETEX")
+    let _int: u32 = redis::cmd("SETEX")
         .arg(id)
         .arg(60)
         .arg(user)
