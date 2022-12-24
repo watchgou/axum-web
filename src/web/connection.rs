@@ -18,7 +18,7 @@ struct Config {
 pub fn connect() -> impl redis::ConnectionLike {
     let mut file = match File::open("./application.toml") {
         Ok(f) => f,
-        Err(e) => panic!("no such file ../../application.toml exception:{}", e),
+        Err(e) => panic!("no such file ./application.toml exception:{}", e),
     };
     let mut toml_str = String::new();
 
