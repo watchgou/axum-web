@@ -3,6 +3,10 @@ use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use crate::web::connect;
+
+
+
 /*
 iss (issuer)：签发人
 
@@ -42,6 +46,8 @@ struct Tokens {
 
 pub async fn get_token(Json(_login): Json<Login>) ->  impl IntoResponse {
 
+    let _connect=connect();
+   
     let uid=Uuid::new_v4().to_string();
 
     let my_claims = Claims {
