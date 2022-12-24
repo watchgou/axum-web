@@ -1,11 +1,10 @@
 use axum::{http::StatusCode, response::IntoResponse, Json};
 use jsonwebtoken::{encode, EncodingKey, Header};
+use redis::ToRedisArgs;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::web::connect;
-
-
 
 /*
 iss (issuer)：签发人
@@ -29,14 +28,30 @@ struct Claims {
     iss: String,
     sub: String,
     company: String,
-    jti:String,
+    jti: String,
 }
 
 #[allow(dead_code)]
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Login {
     username: String,
     email: String,
+}
+
+#[derive(Deserialize, Serialize)]
+struct User {
+    username: String,
+    email: String,
+}
+
+impl ToRedisArgs for User {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + redis::RedisWrite,
+    {
+        let bytes = bincode::serialize(self).unwrap();
+        out.write_arg(&bytes)
+    }
 }
 
 #[derive(Serialize)]
@@ -44,18 +59,31 @@ struct Tokens {
     id: String,
 }
 
-pub async fn get_token(Json(_login): Json<Login>) ->  impl IntoResponse {
+pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
+    let mut connect = connect();
 
-    let _connect=connect();
-   
-    let uid=Uuid::new_v4().to_string();
+    let uid = Uuid::new_v4().to_string();
+
+    let id = format!("access_token:{}", uid.clone());
 
     let my_claims = Claims {
-        iss: "jon".to_string(),
-        sub: "b@b.com".to_owned(),
+        iss: _login.username.clone(),
+        sub: _login.email.clone(),
         company: "ACME".to_owned(),
-        jti:uid,
+        jti: uid,
     };
+
+    let user = User {
+        username: _login.username.clone(),
+        email: _login.email.clone(),
+    };
+
+    let _: () = redis::cmd("SETEX")
+        .arg(id)
+        .arg(10000)
+        .arg(user)
+        .query(&mut connect)
+        .unwrap();
 
     let token = encode(
         &Header::default(),

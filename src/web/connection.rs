@@ -15,7 +15,7 @@ struct Config {
     redis: Redis,
 }
 
-pub fn connect() -> redis::Connection {
+pub fn connect() -> impl redis::ConnectionLike {
     let mut file = match File::open("./application.toml") {
         Ok(f) => f,
         Err(e) => panic!("no such file ../../application.toml exception:{}", e),
@@ -27,17 +27,14 @@ pub fn connect() -> redis::Connection {
         Err(e) => panic!("is error {}", e),
     };
     let config: Config = toml::from_str(&toml_str.as_str()).unwrap();
-    
 
-    let redis_conn_url = format!(
-        "redis://{}@{}:{}",
-        config.redis.password, config.redis.host, config.redis.port
-    );
-    
-    redis::Client::open(redis_conn_url)
+    let redis_conn_url = format!("redis://{}:{}", config.redis.host, config.redis.port);
+
+    let conn = redis::Client::open(redis_conn_url)
         .expect("Invalid connection URL")
         .get_connection()
-        .expect("failed to connect to Redis")
+        .expect("failed to connect to Redis");
+    conn
 }
 
 #[cfg(test)]
