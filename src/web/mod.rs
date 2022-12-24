@@ -10,6 +10,10 @@ pub mod connection;
 
 pub mod upload;
 
+pub mod result;
+
 pub use connection::*;
+
+pub use result::*;
 
 

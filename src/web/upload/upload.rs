@@ -1,6 +1,8 @@
-use axum::extract::multipart::Multipart;
+use axum::{extract::multipart::Multipart, Json};
 
-pub async fn upload(mut multipart: Multipart) {
+use crate::web::Result;
+
+pub async fn upload(mut  multipart: Multipart) -> Json<Result<String>> {
     match multipart.next_field().await {
         Ok(file) => {
             if let Some(field) = file {
@@ -15,4 +17,6 @@ pub async fn upload(mut multipart: Multipart) {
             println!("{}", e);
         }
     }
+
+    Json(Result::default())
 }
