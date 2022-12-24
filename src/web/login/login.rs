@@ -75,7 +75,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
         sub: _login.email.clone(),
         company: "ACME".to_owned(),
         jti: uid,
-        exp: current.as_secs() + 600,
+        exp: current.as_secs() + 300,
     };
 
     let user = User {

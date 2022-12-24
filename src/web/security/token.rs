@@ -1,6 +1,5 @@
 use std::marker::PhantomData;
 
-use crate::web::connect;
 use axum::{
     http::{header, Request, Response, StatusCode},
     response::Result,
@@ -9,6 +8,8 @@ use http_body::Body;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use tower_http::auth::AuthorizeRequest;
+
+use crate::web::connect;
 pub struct Authorization<ResBody> {
     pub _ty: PhantomData<fn() -> ResBody>,
 }
@@ -26,6 +27,11 @@ impl<ResBody> Clone for Authorization<ResBody> {
     fn clone(&self) -> Self {
         Self { _ty: PhantomData }
     }
+}
+
+#[derive(Serialize)]
+struct Msg {
+    msg: String,
 }
 
 impl<B, ResBody> AuthorizeRequest<B> for Authorization<ResBody>
