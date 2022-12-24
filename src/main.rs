@@ -18,9 +18,9 @@ async fn main() {
         .route("/users", post(web::jsons::create_user))
         //  请求参数带有内容
         .route("/getPath/:id", get(web::paths::get_user))
-        .route_layer(RequireAuthorizationLayer::custom(web::security::Authorization {
-            _ty: PhantomData,
-        }));
+        .route_layer(RequireAuthorizationLayer::custom(
+            web::security::Authorization { _ty: PhantomData },
+        ));
 
     let all = Router::new().merge(login).merge(app);
 

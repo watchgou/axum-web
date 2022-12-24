@@ -68,14 +68,14 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
     let uid = Uuid::new_v4().to_string();
 
     let id = format!("access_token:{}", uid.clone());
-    let current=SystemTime::now().duration_since(UNIX_EPOCH).expect("OK");
+    let current = SystemTime::now().duration_since(UNIX_EPOCH).expect("OK");
 
     let my_claims = Claims {
         iss: _login.username.clone(),
         sub: _login.email.clone(),
         company: "ACME".to_owned(),
         jti: uid,
-        exp:current.as_secs()+600,
+        exp: current.as_secs() + 600,
     };
 
     let user = User {
