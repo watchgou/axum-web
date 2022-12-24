@@ -1,6 +1,6 @@
 use axum::{
     routing::{get, post},
-    Router,
+    Router
 };
 use std::{marker::PhantomData, net::SocketAddr};
 use tower_http::auth::RequireAuthorizationLayer;
@@ -18,6 +18,7 @@ async fn main() {
         .route("/users", post(web::jsons::create_user))
         //  请求参数带有内容
         .route("/getPath/:id", get(web::paths::get_user))
+        .route("/upload",post(web::upload::upload))
         .route_layer(RequireAuthorizationLayer::custom(
             web::security::Authorization { _ty: PhantomData },
         ));

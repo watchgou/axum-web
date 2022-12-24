@@ -75,7 +75,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
         sub: _login.email.clone(),
         company: "ACME".to_owned(),
         jti: uid,
-        exp: current.as_secs() + 300,
+        exp: current.as_secs() + 1200,
     };
 
     let user = User {
@@ -85,7 +85,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
 
     let _: () = redis::cmd("SETEX")
         .arg(id)
-        .arg(300)
+        .arg(1200)
         .arg(user)
         .query(&mut connect)
         .unwrap();

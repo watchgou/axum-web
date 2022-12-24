@@ -8,4 +8,8 @@ pub mod paths;
 
 pub mod connection;
 
+pub mod upload;
+
 pub use connection::*;
+
+
