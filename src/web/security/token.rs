@@ -13,12 +13,6 @@ pub struct MyBearer<ResBody> {
     pub _ty: PhantomData<fn() -> ResBody>,
 }
 
-impl<ResBody> Clone for MyBearer<ResBody> {
-    fn clone(&self) -> Self {
-        Self { _ty: PhantomData }
-    }
-}
-
 #[derive(Debug, Serialize, Deserialize)]
 struct Claims {
     iss: String,
@@ -26,6 +20,12 @@ struct Claims {
     company: String,
     jti: String,
     exp: u64,
+}
+
+impl<ResBody> Clone for MyBearer<ResBody> {
+    fn clone(&self) -> Self {
+        Self { _ty: PhantomData }
+    }
 }
 
 impl<B, ResBody> AuthorizeRequest<B> for MyBearer<ResBody>
@@ -39,8 +39,6 @@ where
         // DECODE
 
         if let Some(v1) = header {
-            // println!("{:#?}", v1);
-
             match v1.to_str() {
                 Ok(v) => {
                     let tk = &v[7..];
@@ -53,14 +51,12 @@ where
 
                     match token_message {
                         Ok(token_data) => {
-                            let claims = token_data.claims;
-                            let uuid = claims.jti;
-
                             let mut connect = connect();
-                            let uuid = format!("access_token:{}", uuid);
 
-                            let result: i64 =
-                                redis::cmd("TTL").arg(uuid).query(&mut connect).unwrap();
+                            let result: i64 = redis::cmd("TTL")
+                                .arg(format!("access_token:{}", token_data.claims.jti))
+                                .query(&mut connect)
+                                .unwrap();
                             if result < 0 {
                                 let mut res = Response::new(ResBody::default());
                                 *res.status_mut() = StatusCode::NON_AUTHORITATIVE_INFORMATION;
