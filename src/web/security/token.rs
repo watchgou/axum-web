@@ -29,10 +29,7 @@ impl<ResBody> Clone for Authorization<ResBody> {
     }
 }
 
-#[derive(Serialize)]
-struct Msg {
-    msg: String,
-}
+
 
 impl<B, ResBody> AuthorizeRequest<B> for Authorization<ResBody>
 where
