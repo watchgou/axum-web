@@ -9,7 +9,7 @@ use http_body::Body;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use tower_http::auth::AuthorizeRequest;
-pub struct MyBearer<ResBody> {
+pub struct Authorization<ResBody> {
     pub _ty: PhantomData<fn() -> ResBody>,
 }
 
@@ -22,13 +22,13 @@ struct Claims {
     exp: u64,
 }
 
-impl<ResBody> Clone for MyBearer<ResBody> {
+impl<ResBody> Clone for Authorization<ResBody> {
     fn clone(&self) -> Self {
         Self { _ty: PhantomData }
     }
 }
 
-impl<B, ResBody> AuthorizeRequest<B> for MyBearer<ResBody>
+impl<B, ResBody> AuthorizeRequest<B> for Authorization<ResBody>
 where
     ResBody: Body + Default,
 {
