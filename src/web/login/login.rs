@@ -1,3 +1,5 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use axum::{http::StatusCode, response::IntoResponse, Json};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use redis::ToRedisArgs;
@@ -29,6 +31,7 @@ struct Claims {
     sub: String,
     company: String,
     jti: String,
+    exp: u64,
 }
 
 #[allow(dead_code)]
@@ -65,12 +68,14 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
     let uid = Uuid::new_v4().to_string();
 
     let id = format!("access_token:{}", uid.clone());
+    let current=SystemTime::now().duration_since(UNIX_EPOCH).expect("OK");
 
     let my_claims = Claims {
         iss: _login.username.clone(),
         sub: _login.email.clone(),
         company: "ACME".to_owned(),
         jti: uid,
+        exp:current.as_secs()+30,
     };
 
     let user = User {
@@ -80,7 +85,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
 
     let _: () = redis::cmd("SETEX")
         .arg(id)
-        .arg(10000)
+        .arg(60)
         .arg(user)
         .query(&mut connect)
         .unwrap();
@@ -88,7 +93,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
     let token = encode(
         &Header::default(),
         &my_claims,
-        &EncodingKey::from_secret("secret".as_ref()),
+        &EncodingKey::from_secret("abcdefghijklmnoprstxyz".as_ref()),
     )
     .unwrap();
     let token_id = Tokens { id: token };

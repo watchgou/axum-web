@@ -3,7 +3,7 @@ pub mod jsons;
 
 pub mod login;
 
-pub mod token;
+pub mod security;
 
 pub mod paths;
 
