@@ -85,7 +85,7 @@ pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
 
     let _: () = redis::cmd("SETEX")
         .arg(id)
-        .arg(60)
+        .arg(300)
         .arg(user)
         .query(&mut connect)
         .unwrap();
