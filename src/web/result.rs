@@ -2,8 +2,8 @@ use derivative::Derivative;
 use serde::Serialize;
 
 #[warn(legacy_derive_helpers)]
-#[derivative(Default)]
-#[derive(Derivative, Serialize)]
+
+#[derive(Derivative, Serialize,Default)]
 pub struct Result <T>{
     #[derivative(Default(value = "0"))]
     pub code: u32,
