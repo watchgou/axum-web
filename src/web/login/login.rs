@@ -6,7 +6,7 @@ use redis::ToRedisArgs;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::web::connect;
+use crate::web::reids_connect;
 
 /*
 iss (issuer)：签发人
@@ -63,7 +63,7 @@ struct Tokens {
 }
 
 pub async fn get_token(Json(_login): Json<Login>) -> impl IntoResponse {
-    let mut connect = connect();
+    let mut connect = reids_connect();
 
     let uid = Uuid::new_v4().to_string();
 

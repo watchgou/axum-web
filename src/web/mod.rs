@@ -6,14 +6,18 @@ pub mod security;
 
 pub mod paths;
 
-pub mod connection;
+pub mod configuration;
 
 pub mod upload;
 
 pub mod result;
 
-pub use connection::*;
+pub mod server;
+
+pub use configuration::*;
 
 pub use result::*;
+
+pub use server::*;
 
 

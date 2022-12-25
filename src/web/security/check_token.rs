@@ -9,7 +9,7 @@ use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use tower_http::auth::AuthorizeRequest;
 
-use crate::web::connect;
+use crate::web::reids_connect;
 pub struct Authorization<ResBody> {
     pub _ty: PhantomData<fn() -> ResBody>,
 }
@@ -54,7 +54,7 @@ where
 
                     match token_message {
                         Ok(token_data) => {
-                            let mut connect = connect();
+                            let mut connect = reids_connect();
 
                             let result: i64 = redis::cmd("TTL")
                                 .arg(format!("access_token:{}", token_data.claims.jti))
