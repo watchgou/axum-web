@@ -44,15 +44,15 @@ pub fn reids_connect() -> impl redis::ConnectionLike {
         Ok(config) => {
             let redis_conn_url = format!("redis://{}:{}", config.redis.host, config.redis.port);
 
-            let conn = redis::Client::open(redis_conn_url)
+            redis::Client::open(redis_conn_url)
                 .expect("Invalid connection URL")
                 .get_connection()
-                .expect("failed to connect to Redis");
-            conn
+                .expect("failed to connect to Redis")
         }
-        Err(_) => {
-            panic!()
-        }
+        Err(_) => redis::Client::open("redis://127.0.0.1:4379")
+            .expect("Invalid connection URL")
+            .get_connection()
+            .expect("failed to connect to Redis"),
     }
 }
 
