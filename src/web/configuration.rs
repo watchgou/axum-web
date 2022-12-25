@@ -65,15 +65,18 @@ pub fn server_configuration() -> ([u8; 4], u16) {
                 .server
                 .host
                 .split(',')
-                .map(|v| v.parse().unwrap())
+                .map(|v| match v.parse::<u8>() {
+                    Ok(h) => h,
+                    Err(_) => 0,
+                })
                 .collect();
-            let host = v_host.as_slice();
-            let mut hosts: [u8; 4] = [0, 0, 0, 0];
+            let v_host = v_host.as_slice();
+            let mut host: [u8; 4] = [0, 0, 0, 0];
             for i in 0..4 {
-                hosts[i] = host[i];
+                host[i] = v_host[i];
             }
             let port = config.server.port.parse::<u16>().unwrap();
-            (hosts, port)
+            (host, port)
         }
         Err(_) => ([0, 0, 0, 0], 9000),
     }
