@@ -1,7 +1,6 @@
 use derivative::Derivative;
 use serde::Serialize;
 
-#[warn(legacy_derive_helpers)]
 
 #[derive(Derivative, Serialize,Default)]
 pub struct Result <T>{
