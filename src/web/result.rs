@@ -8,8 +8,7 @@ pub struct Result <T>{
     #[derivative(Default(value = "0"))]
     pub code: u32,
 
-    #[derivative(Default(value="true"))]
-    pub status: bool,
+    pub msg:String,
 
     pub data:Option<T>,
 }
