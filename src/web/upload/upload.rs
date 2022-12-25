@@ -10,8 +10,8 @@ pub async fn upload(mut multipart: Multipart) -> Json<Result<String>> {
                 //let data = field.bytes().await.unwrap();
                 let data = field.bytes();
                 match data.await {
-                    Ok(file_data) => {
-                        println!("Length of `{}` is {} bytes", name, file_data.len());
+                    Ok(bytes) => {
+                        println!("Length of `{}` is {} bytes", name, bytes.len());
                         Json(Result::default())
                     }
                     Err(_) => {
