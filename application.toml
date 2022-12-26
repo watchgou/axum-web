@@ -1,18 +1,22 @@
+# redis server
 [redis]
 host="42.192.75.76"
 port="4477"
 password="你猜猜我的密码多少?"
 
+
+#local server
 [server]
 host = "127,0,0,1"
 port = "9000"
 
 
+#mysql server
 [datasource]
 host="42.192.75.76"
 port="4356"
 database="fooldb"
 username="fool"
-password="123456"
+password="你猜猜我的密码多少?"
 
 
