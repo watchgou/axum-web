@@ -19,6 +19,7 @@ pub async fn server() {
         //  请求参数带有内容
         .route("/getPath/:id", get(web::paths::get_user))
         .route("/upload", post(web::upload::upload))
+        .route("/query/user", get(web::database::test_mysql::query_user))
         .route_layer(RequireAuthorizationLayer::custom(
             web::security::Authorization { _ty: PhantomData },
         ));
