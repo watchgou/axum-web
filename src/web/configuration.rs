@@ -1,5 +1,6 @@
 use std::{fs::File, io::Read};
 
+
 use redis;
 use serde::{Deserialize, Serialize};
 
@@ -17,9 +18,19 @@ pub struct Server {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct Datasource {
+    pub host: String,
+    pub port: String,
+    pub database: String,
+    pub username: String,
+    pub password: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     redis: Redis,
     pub server: Server,
+    pub datasource: Datasource,
 }
 
 pub fn configuration() -> Result<Config, ()> {
@@ -82,13 +93,40 @@ pub fn server_configuration() -> ([u8; 4], u16) {
     }
 }
 
-#[cfg(test)]
+pub fn database_connection() -> mysql::Pool {
+    let datasource = match configuration() {
+        Ok(conf) => conf.datasource,
+        Err(_) => panic!(""),
+    };
+    let url = format!(
+        "mysql://{}:{}@{}:{}/{}",
+        datasource.username,
+        datasource.password,
+        datasource.host,
+        datasource.port,
+        datasource.database
+    );
 
+    let pool = mysql::Pool::new(url.as_str());
+
+   let pool= match pool {
+        Ok(o) => o,
+        Err(e) => panic!("{}", e),
+    };
+    pool
+    
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
     #[test]
-
-    fn test() {
+    fn redis_test() {
         reids_connect();
+    }
+
+    #[test]
+    fn database_test() {
+        database_connection();
     }
 }
