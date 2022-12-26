@@ -4,4 +4,44 @@
 
 
 
+
+
+
+```
+axum-web/
+├── application.toml
+├── Cargo.lock
+├── Cargo.toml
+├── LICENSE
+├── README.md
+└── src
+    ├── main.rs
+    └── web
+        ├── configuration.rs
+        ├── database
+        │   └── mod.rs
+        ├── datasource.rs
+        ├── jsons
+        │   ├── mod.rs
+        │   └── user.rs
+        ├── login
+        │   ├── login.rs
+        │   └── mod.rs
+        ├── mod.rs
+        ├── paths
+        │   ├── mod.rs
+        │   └── path.rs
+        ├── result.rs
+        ├── security
+        │   ├── check_token.rs
+        │   └── mod.rs
+        ├── server.rs
+        └── upload
+            ├── mod.rs
+            └── upload.rs
+```
+
+
+
+
 ## 献给小鸭鸭
