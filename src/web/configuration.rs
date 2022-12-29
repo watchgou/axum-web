@@ -77,9 +77,12 @@ pub fn server_configuration() -> ([u8; 4], u16) {
                 .split(',')
                 .map(|v| match v.parse::<u8>() {
                     Ok(h) => h,
-                    Err(_) => 0,
+                    Err(_) => {
+                        panic!("error")
+                    }
                 })
                 .collect();
+
             let v_host = v_host.as_slice();
             let mut host: [u8; 4] = [0, 0, 0, 0];
             for i in 0..4 {
