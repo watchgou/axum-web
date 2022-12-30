@@ -15,7 +15,7 @@ pub mod test_mysql {
 
     pub async fn query_user() -> Json<web::Result<Vec<User>>> {
         let result = web::datasource::query_info(
-            "select username,password,userid from user limit 0,10",
+            "select username,password,userid from user ",
             |(username, password, userid)| User {
                 username,
                 password,
