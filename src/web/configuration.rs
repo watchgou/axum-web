@@ -1,5 +1,6 @@
 use std::{fs::File, io::Read};
 
+use log::error;
 use redis;
 use serde::{Deserialize, Serialize};
 
@@ -84,7 +85,7 @@ pub fn server_configuration() -> ([u8; 4], u16) {
                 .collect();
 
             let v_host = v_host.as_slice();
-            let mut host: [u8; 4] = [0;4];
+            let mut host: [u8; 4] = [0; 4];
             for i in 0..4 {
                 host[i] = v_host[i];
             }
@@ -113,10 +114,16 @@ pub fn database_connection() -> mysql::Pool {
 
     let pool = match pool {
         Ok(o) => o,
-        Err(e) => panic!("{}", e),
+        Err(e) =>{
+            error!("{}",e);
+            panic!()
+        },
+        
     };
     pool
 }
+
+
 
 #[cfg(test)]
 mod tests {

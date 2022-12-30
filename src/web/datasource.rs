@@ -28,7 +28,8 @@ where
     conn.query_map(script, d)
 }
 
-pub fn insert_data<S, P, I>(stmt: S, param: I)
+
+pub fn _insert_data<S, P, I>(stmt: S, param: I)
 where
     S: AsStatement,
     P: Into<Params>,

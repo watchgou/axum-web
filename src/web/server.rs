@@ -4,12 +4,16 @@ use axum::{
     routing::{get, post},
     Router,
 };
+
+
 use tower_http::auth::RequireAuthorizationLayer;
 
 use crate::web;
 
 pub async fn server() {
     tracing_subscriber::fmt::init();
+
+
 
     let login = Router::new().route("/login", post(web::login::get_token));
 

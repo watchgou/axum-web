@@ -9,6 +9,8 @@ license = "Unlicense"
 
 
 [dependencies]
+log = "0.4.17"
+env_logger = "0.10.0"
 axum ={version="0.6",features=["multipart"]}
 serde = { version = "1.0.14", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
