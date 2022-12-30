@@ -7,7 +7,7 @@ password="你猜猜我的密码多少?"
 
 #local server
 [server]
-host = "127,0,0,1"
+host = "0,0,0,0"
 port = "9000"
 
 
@@ -18,5 +18,3 @@ port="4356"
 database="fooldb"
 username="fool"
 password="你猜猜我的密码多少?"
-
-
