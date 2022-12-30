@@ -84,7 +84,7 @@ pub fn server_configuration() -> ([u8; 4], u16) {
                 .collect();
 
             let v_host = v_host.as_slice();
-            let mut host: [u8; 4] = [0, 0, 0, 0];
+            let mut host: [u8; 4] = [0;4];
             for i in 0..4 {
                 host[i] = v_host[i];
             }
